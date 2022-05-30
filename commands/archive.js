@@ -41,13 +41,9 @@ module.exports = {
 
 		//no leakers!!!!
 		if (!api.data.is_public && !whitelistedGuilds.find((guild)=>guild==interaction.guildId)) return interaction.editReply(`Error archiving asset ${id}: ` + "Asset is not approved");
-
-		//AND NO CLOTHES STEALING
 		if (api.data.creator.id!==1003 && blacklistedTypes.find((type)=>type==api.data.type.type) && !whitelistedGuilds.find((guild)=>guild==interaction.guildId)) return interaction.editReply({content: "Archiving user uploaded assets has been disabled.", ephemeral: true});
 
-
-		let thumbnailData = await phin({url:"https://api.brick-hill.com/v1/thumbnails/bulk",method:"POST",data:{"thumbnails": [{"id": id,"type": 2}]}})
-		urls.push({url:JSON.parse(thumbnailData.body.toString()).data[0].thumbnail, name:`${id}_thumbnail.png`})
+		urls.push({url:api.data.thumbnail, name:`${id}_thumbnail.png`})
 
 		let response = (await phin(`https://api.brick-hill.com/v1/assets/getPoly/1/${id}`)).body.toString()
 		console.log(response)
